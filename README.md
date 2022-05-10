@@ -2,7 +2,7 @@
 
 
 <a href="https://www.youtube.com/watch?v=s_1qc8j0Xv4">
-  <img src="https://mikedoconsulting.com/images/Mass_Void_Ray_Bot.webp" width="600px" />
+  <img src="https://seo.mikedoconsulting.com/images/Mass_Void_Ray_Bot.webp" width="600px" />
 </a>
 
 ```
