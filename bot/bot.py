@@ -156,7 +156,6 @@ class CompetitiveBot(BotAI):
                 if self.can_afford(UnitTypeId.CYBERNETICSCORE) and self.already_pending(UnitTypeId.CYBERNETICSCORE) == 0:
                     await self.build(UnitTypeId.CYBERNETICSCORE, near=pylon_ready.closest_to(nexus))
 
-
     # Build STARGATES to create AIR UNITS
     async def build_stargates(self, nexus):
         if self.can_afford(UnitTypeId.STARGATE) and self.structures(UnitTypeId.STARGATE).amount < 3:
@@ -166,3 +165,10 @@ class CompetitiveBot(BotAI):
     def on_end(self, result):
         print("Game ended.")
         # Do things here after the game ends
+
+
+
+class ICBot(BotAI):
+    NAME: str = "CaSink"
+    """This bot's name"""
+    RACE: Race = Race.Zerg

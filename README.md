@@ -9,5 +9,8 @@
 ```
 ### Starting the Game
 $ python ./go.py --ComputerRace Random --ComputerDifficulty VeryHard --Map DiscoBloodbathLE --Realtime
+$ python ./go.py --ComputerRace Random --ComputerDifficulty VeryHard --Map IndoChina --Realtime
+
+
 
 ```

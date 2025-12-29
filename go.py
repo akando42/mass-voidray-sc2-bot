@@ -2,6 +2,7 @@ import sys
 
 sys.path.insert(1, "python-sc2")
 
+### Loading CompetitiveBot from /bot folder
 from bot import CompetitiveBot
 
 import argparse
