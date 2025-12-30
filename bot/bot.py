@@ -28,7 +28,8 @@ class CompetitiveBot(BotAI):
         print("Game started")
 
     async def on_step(self, iteration):
-        nexus = self.townhalls.ready.random
+        hatch: Unit = self.townhalls[0]
+
         # Assign tasks to workers 
         await self.distribute_workers()
        
@@ -163,12 +164,174 @@ class CompetitiveBot(BotAI):
             await self.build(UnitTypeId.STARGATE, near=pylon_ready.closest_to(nexus))
 
     def on_end(self, result):
-        print("Game ended.")
+        print("Game ended. ", result)
         # Do things here after the game ends
-
-
 
 class ICBot(BotAI):
     NAME: str = "CaSink"
     """This bot's name"""
     RACE: Race = Race.Zerg
+
+    battlecruisers_count = 0
+
+    def __init__(self):
+        ### Initiating built in Classes
+        sc2.BotAI.__init__(self)
+
+    async def on_start(self):
+        print("Starting Game")
+        await self.moveWorkers()
+
+    async def on_step(self, iteration):
+
+        target = Point2((95,75))
+        defense_pos = Point2((target.x, target.y-10))
+
+        await self.hydraAttack(target)
+
+        await self.corruptAttack(defense_pos)
+
+        await self.build_pool()
+
+        await self.build_airdefense(defense_pos)
+
+        await self.battleCruiserCount()
+
+        if self.battlecruisers_count == 0:
+            print("No Battle Cruiser Left")
+            await self.distribute_workers()
+            # for larva in self.larva:
+            #     if self.minerals >= 50 and self.supply_left >= 2:
+            #         self.do(larva.train(UnitTypeId.ZERGLING))
+
+            army = self.units.exclude_type({UnitTypeId.DRONE})
+            for unit in army.idle:
+                self.do(unit.attack(target))
+
+        else:
+            print("There are ", self.battlecruisers_count, " battlecruisers")
+        
+    async def moveWorkers(self):
+        townhalls = self.townhalls.ready
+        # positions = [th.position for th in self.townhalls.ready]
+
+        top_right_corner = self.game_info.map_size
+        top_right = min(
+            townhalls,
+            key=lambda th: th.position.distance_to(top_right_corner)
+        )
+
+        bottom_right = min(
+            townhalls,
+            key=lambda th: (th.position.y, -th.position.x)
+        )
+
+        minerals = self.mineral_field.closer_than(10, top_right)
+        if not minerals:
+            return
+
+        workers = self.workers
+        if not workers:
+            return
+
+        for worker in workers:
+            mineral = minerals.closest_to(worker)
+            self.do(worker.gather(mineral))
+
+    async def build_pool(self):
+        townhalls = self.townhalls.ready
+
+        top_right_corner = self.game_info.map_size
+        top_right = min(
+            townhalls,
+            key=lambda th: th.position.distance_to(top_right_corner)
+        )
+
+        if not self.structures(UnitTypeId.SPAWNINGPOOL):
+            if self.can_afford(UnitTypeId.SPAWNINGPOOL) and self.already_pending(UnitTypeId.SPAWNINGPOOL) == 0:
+                print("Building Pool ", top_right)
+                await self.build(
+                    UnitTypeId.SPAWNINGPOOL, 
+                    near=top_right
+                )
+
+    async def build_airdefense(self, position):
+        print("Building Air Defense")
+        # Check requirement
+        if not self.structures(UnitTypeId.SPAWNINGPOOL).ready:
+            return
+
+        # Check resources
+        if self.minerals < 75:
+            return
+
+        if len(self.structures(UnitTypeId.SPORECRAWLER)) > 16:
+            return
+
+        # Get a worker
+        worker = self.workers.random
+        if not worker:
+            return
+
+        # Issue build order
+        await self.build(
+            UnitTypeId.SPORECRAWLER, 
+            near=position, 
+            build_worker=worker
+        )
+
+    async def hydraAttack(self, target):
+        # print("Hydra Attacking")
+        hydras = self.units(UnitTypeId.HYDRALISK)
+        if not hydras:
+            return
+
+        ### FIND TOP MIDDLE
+        top_middle = self.game_info.map_size / 2
+        # top_middle = top_middle.with_y(self.game_info.map_size.y)
+
+        ### FIND MAP CENTER
+        map_center = self.game_info.map_center
+
+        ### FIND ENEMY STARTING POSITION
+        ### enemy_base = self.enemy_start_locations[0]
+
+        ### FIND TOP MIDDLE
+        map_size = self.game_info.map_size
+        top_middle = Point2((map_size.x / 2, map_size.y))
+
+        # print("Map Center", map_center)
+        # print("Top Middle", top_middle)
+        # print("Map Size", self.game_info.map_size)
+
+        # target = Point2((70,78))
+
+        ### 3 battle cruisers left
+        ### Point2((70, 80))
+
+        for hydra in hydras:         
+            self.do(hydra.attack(target))
+
+    async def corruptAttack(self, target):
+        # print("Corrupts Attacking")
+        corrupts = self.units(UnitTypeId.CORRUPTOR)
+        if not corrupts:
+            return
+
+        ### FIND TOP MIDDLE
+        map_size = self.game_info.map_size
+        # target = Point2((map_size.x / 2, map_size.y))
+
+        ### FIND MAP CENTER
+        map_center = self.game_info.map_center
+
+
+        for corrupt in corrupts:
+            self.do(corrupt.attack(target))
+
+    async def battleCruiserCount(self):
+        battlecruisers = self.enemy_units(UnitTypeId.BATTLECRUISER)
+        self.battlecruisers_count = len(battlecruisers) 
+
+    async def on_end(self, result):
+        print("Game ended. ", result)

@@ -1,1 +1,1 @@
-from .bot import CompetitiveBot
+from .bot import CompetitiveBot, ICBot
