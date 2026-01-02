@@ -185,31 +185,24 @@ class ICBot(BotAI):
     async def on_step(self, iteration):
 
         target = Point2((95,75))
+        final_target = Point2((10,10))
         defense_pos = Point2((target.x, target.y-10))
 
-        await self.hydraAttack(target)
-
+        await self.battleCruiserCount()
+    
+        if self.battlecruisers_count == 0:
+            print("No Battle Cruiser Left")
+            await self.distribute_workers()
+            await self.hydraAttack(final_target)
+        else:
+            await self.hydraAttack(target)
+            print("There are ", self.battlecruisers_count, " battlecruisers")
+       
         await self.corruptAttack(defense_pos)
 
         await self.build_pool()
 
-        await self.build_airdefense(defense_pos)
-
-        await self.battleCruiserCount()
-
-        if self.battlecruisers_count == 0:
-            print("No Battle Cruiser Left")
-            await self.distribute_workers()
-            # for larva in self.larva:
-            #     if self.minerals >= 50 and self.supply_left >= 2:
-            #         self.do(larva.train(UnitTypeId.ZERGLING))
-
-            army = self.units.exclude_type({UnitTypeId.DRONE})
-            for unit in army.idle:
-                self.do(unit.attack(target))
-
-        else:
-            print("There are ", self.battlecruisers_count, " battlecruisers")
+        await self.build_airdefense(defense_pos)    
         
     async def moveWorkers(self):
         townhalls = self.townhalls.ready
@@ -256,7 +249,6 @@ class ICBot(BotAI):
                 )
 
     async def build_airdefense(self, position):
-        print("Building Air Defense")
         # Check requirement
         if not self.structures(UnitTypeId.SPAWNINGPOOL).ready:
             return
@@ -268,12 +260,16 @@ class ICBot(BotAI):
         if len(self.structures(UnitTypeId.SPORECRAWLER)) > 16:
             return
 
+        if self.battlecruisers_count == 0:
+            return
+
         # Get a worker
         worker = self.workers.random
         if not worker:
             return
 
         # Issue build order
+        print("Building Air Defense")
         await self.build(
             UnitTypeId.SPORECRAWLER, 
             near=position, 
@@ -309,7 +305,8 @@ class ICBot(BotAI):
         ### 3 battle cruisers left
         ### Point2((70, 80))
 
-        for hydra in hydras:         
+        for hydra in hydras:    
+            print("Hydra attacking ", target)     
             self.do(hydra.attack(target))
 
     async def corruptAttack(self, target):
