@@ -185,9 +185,9 @@ class ICBot(BotAI):
     async def on_step(self, iteration):
 
         target = Point2((95,75))
-        final_target = Point2((10,10))
         defense_pos = Point2((target.x, target.y-10))
-
+        final_target = Point2((10,10))
+        
         await self.battleCruiserCount()
     
         if self.battlecruisers_count == 0:

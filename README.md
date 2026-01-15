@@ -7,11 +7,16 @@
 </a>
 
 ```
+### Starcraft Map Locations
+
 ### Starting the Game
 $ python ./go.py --ComputerRace Random --ComputerDifficulty VeryHard --Map DiscoBloodbathLE --Realtime
 
 
 ### Starting IndoChina Simulation
-$ python ./sim.py --ComputerRace Random --ComputerDifficulty VeryHard --Map IndoChina 
+$ python ./indochina_sim.py --ComputerRace Random --ComputerDifficulty VeryHard --Map IndoChina 
 
+
+### Starting World War Simulation
+$ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard --Map WorldWar
 ```
