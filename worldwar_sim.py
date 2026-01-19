@@ -113,7 +113,7 @@ def parse_arguments():
 
 def load_bot(args):
     # Load bot
-    competitive_bot = ICBot()
+    competitive_bot = ICBot(args)
     # Add opponent_id to the bot class (accessed through self.opponent_id)
     competitive_bot.opponent_id = args.OpponentId
 
@@ -142,7 +142,7 @@ def run():
         sc2.run_game(sc2.maps.get(args.Map),
                      [bot, Computer(Race[args.ComputerRace], Difficulty[args.ComputerDifficulty])],
                      realtime=args.Realtime,
-                     sc2_version=args.Sc2Version,)
+                     sc2_version=args.Sc2Version)
 
 
 # Start game

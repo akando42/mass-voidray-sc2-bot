@@ -20,7 +20,7 @@ class CompetitiveBot(BotAI):
         Race.Random
     """
 
-    def __init__(self):
+    def __init__(self, args):
         ### Initiating built in Classes
         sc2.BotAI.__init__(self)
 
@@ -174,26 +174,61 @@ class ICBot(BotAI):
 
     battlecruisers_count = 0
 
-    def __init__(self):
+    def __init__(self,args):
         ### Initiating built in Classes
+        self.args = args
         sc2.BotAI.__init__(self)
 
     async def on_start(self):
-        print("Starting Game")
-        await self.moveWorkers()
+        print("Starcraft Bot Initalization")
+        print("Expansions:", len(self.expansion_locations_list))
+        ic = self.args.Industry
+        industry_coordinate = tuple(map(int, ic.split(",")))
+
+        await self.moveWorkers(industry_coordinate)
 
     async def on_step(self, iteration):
 
-        target = Point2((95,75))
-        defense_pos = Point2((target.x, target.y-10))
-        final_target = Point2((10,10))
+        # print("INDUSTRY ", self.args.Industry)
+        # print("DEFENSE ", self.args.Defense)
+        # print("FINAL ", self.args.Final)
+
+        oc = self.args.Offense
+        offense_coordinate = tuple(map(int, oc.split(",")))
+        # print("OFFENSE ", oc, offense_coordinate)
+
+        dc = self.args.Defense
+        defense_coordinate = tuple(map(int, dc.split(",")))
+        # print("DEFENSE ", dc, defense_coordinate)
+
+        fc = self.args.Final
+        final_coordinate = tuple(map(int, fc.split(",")))
+        # print("FINAL OFFENSE ", fc, final_coordinate)
+
+        target = Point2(offense_coordinate)
+        defense_pos = Point2(defense_coordinate)     
+
+        final_target = Point2(final_coordinate)
         
         await self.battleCruiserCount()
     
         if self.battlecruisers_count == 0:
             print("No Battle Cruiser Left")
             await self.distribute_workers()
-            await self.hydraAttack(final_target)
+            if self.units(UnitTypeId.HYDRALISK).amount > 3:
+                await self.hydraAttack(final_target)
+            else:
+                await self.build_zergling()
+                army = self.units.filter(
+                    lambda u: u.can_attack 
+                    and not u.is_structure
+                    and u.type_id != UnitTypeId.DRONE
+                )
+                print("All ARMY Attack Final Target")
+                if army:
+                    for unit in army:
+                        unit.attack(final_target)
+           
         else:
             await self.hydraAttack(target)
             print("There are ", self.battlecruisers_count, " battlecruisers")
@@ -202,10 +237,14 @@ class ICBot(BotAI):
 
         await self.build_pool()
 
+        await self.build_overlord()
+
         await self.build_airdefense(defense_pos)    
         
-    async def moveWorkers(self):
+    async def moveWorkers(self, target):
         townhalls = self.townhalls.ready
+        print("Townhalls ", townhalls)
+
         # positions = [th.position for th in self.townhalls.ready]
 
         top_right_corner = self.game_info.map_size
@@ -219,7 +258,9 @@ class ICBot(BotAI):
             key=lambda th: (th.position.y, -th.position.x)
         )
 
-        minerals = self.mineral_field.closer_than(10, top_right)
+
+        print("MOVING WORKER to ", target)
+        minerals = self.mineral_field.closer_than(10, target)
         if not minerals:
             return
 
@@ -248,7 +289,18 @@ class ICBot(BotAI):
                     near=top_right
                 )
 
+    async def build_overlord(self):
+        if (
+            self.supply_left <= 2
+            and not self.already_pending(UnitTypeId.OVERLORD)
+            and self.can_afford(UnitTypeId.OVERLORD)
+        ):
+            print("Building Overload")
+            larva = self.larva.random
+            larva.train(UnitTypeId.OVERLORD)
+
     async def build_airdefense(self, position):
+        print("Air Defense Count ", len(self.structures(UnitTypeId.SPORECRAWLER)))
         # Check requirement
         if not self.structures(UnitTypeId.SPAWNINGPOOL).ready:
             return
@@ -257,10 +309,13 @@ class ICBot(BotAI):
         if self.minerals < 75:
             return
 
-        if len(self.structures(UnitTypeId.SPORECRAWLER)) > 16:
+        if len(self.structures(UnitTypeId.SPORECRAWLER)) > 30:
             return
 
         if self.battlecruisers_count == 0:
+            return
+
+        if self.units(UnitTypeId.DRONE).amount < 6:
             return
 
         # Get a worker
@@ -275,6 +330,27 @@ class ICBot(BotAI):
             near=position, 
             build_worker=worker
         )
+
+    async def build_hydra(self):
+        if (
+            self.supply_left > 3
+            and not self.already_pending(UnitTypeId.HYDRALISK)
+            and self.can_afford(UnitTypeId.HYDRALISK)
+            and self.units(UnitTypeId.DRONE).amount >= 6
+        ):
+            print("Building HYDRALISK")
+            larva = self.larva.random
+            larva.train(UnitTypeId.HYDRALISK)
+
+    async def build_zergling(self):
+        if (
+            self.structures(UnitTypeId.SPAWNINGPOOL).ready
+            and self.larva
+            and self.can_afford(UnitTypeId.ZERGLING)
+            and self.supply_left >= 2
+            and self.units(UnitTypeId.DRONE).amount >= 6
+        ):
+            self.larva.random.train(UnitTypeId.ZERGLING)
 
     async def hydraAttack(self, target):
         # print("Hydra Attacking")
@@ -305,12 +381,11 @@ class ICBot(BotAI):
         ### 3 battle cruisers left
         ### Point2((70, 80))
 
+        print("Hydras attacking", target)     
         for hydra in hydras:    
-            print("Hydra attacking ", target)     
             self.do(hydra.attack(target))
 
     async def corruptAttack(self, target):
-        # print("Corrupts Attacking")
         corrupts = self.units(UnitTypeId.CORRUPTOR)
         if not corrupts:
             return
@@ -324,6 +399,7 @@ class ICBot(BotAI):
 
 
         for corrupt in corrupts:
+            # print("Corrupts Attacking", target)
             self.do(corrupt.attack(target))
 
     async def battleCruiserCount(self):
