@@ -18,6 +18,9 @@ from sc2.protocol import ConnectionAlreadyClosed
 from sc2.data import Result
 
 
+import multiprocessing as mp
+
+
 # Run ladder game
 # This lets python-sc2 connect to a ladder game.
 # Based on: https://github.com/Dentosal/python-sc2/blob/master/examples/run_external.py
@@ -120,7 +123,8 @@ def load_bot(args):
     return Bot(ICBot.RACE, competitive_bot)
 
 
-def run():
+def run(game_id):
+    print(f"Starting game {game_id}")
     args = parse_arguments()
 
     bot = load_bot(args)
@@ -147,4 +151,15 @@ def run():
 
 # Start game
 if __name__ == "__main__":
-    run()
+    mp.set_start_method("spawn", force=True)
+
+    processes = []
+    for i in range(3):
+        p = mp.Process(target=run, args=(i,))
+        p.start()
+        processes.append(p)
+
+    for p in processes:
+        p.join()
+
+    # run()
