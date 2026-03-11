@@ -20,6 +20,11 @@ from sc2.data import Result
 
 import multiprocessing as mp
 
+import logging
+
+logging.getLogger("sc2").setLevel(logging.ERROR)
+logging.getLogger("sc2.protocol").setLevel(logging.ERROR)
+logging.getLogger("sc2.controller").setLevel(logging.ERROR)
 
 # Run ladder game
 # This lets python-sc2 connect to a ladder game.
@@ -113,7 +118,6 @@ def parse_arguments():
 
     return args
 
-
 def load_bot(args):
     # Load bot
     competitive_bot = ICBot(args)
@@ -122,31 +126,33 @@ def load_bot(args):
 
     return Bot(ICBot.RACE, competitive_bot)
 
-
 def run(game_id):
-    print(f"Starting game {game_id}")
+    # print(f"Starting game {game_id}")
     args = parse_arguments()
 
+    # print(f"ARGS ", args)
     bot = load_bot(args)
 
     # The presence of a LadderServer argument indicates that this is a ladder game
     if args.LadderServer:
         # Ladder game started by LadderManager
-        print("Starting ladder game...")
+        # print("Starting ladder game...")
         result, opponentid = run_ladder_game(args, bot)
-        print(result, " against opponent ", opponentid)
+        # print(result, " against opponent ", opponentid)
     else:
         # Local game
-        print("Starting local game...")
-        print("Industry", args.Industry)
-        print("Defend ", args.Defense)
-        print("Offend ", args.Offense)
-        print("Final", args.Final)
+        # print("Starting local game...")
+        # print("Industry", args.Industry)
+        # print("Defend ", args.Defense)
+        # print("Offend ", args.Offense)
+        # print("Final", args.Final)
 
-        sc2.run_game(sc2.maps.get(args.Map),
-                     [bot, Computer(Race[args.ComputerRace], Difficulty[args.ComputerDifficulty])],
-                     realtime=args.Realtime,
-                     sc2_version=args.Sc2Version)
+        sc2.run_game(
+            sc2.maps.get(args.Map),
+            [bot, Computer(Race[args.ComputerRace], Difficulty[args.ComputerDifficulty])],
+            realtime=args.Realtime,
+            sc2_version=args.Sc2Version
+        )
 
 
 # Start game

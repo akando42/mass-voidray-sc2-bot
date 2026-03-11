@@ -1,4 +1,6 @@
 import sc2
+import json
+
 # from sc2.unit import Unit
 # from sc2.units import Units
 from sc2 import BotAI, Race
@@ -173,6 +175,7 @@ class ICBot(BotAI):
     RACE: Race = Race.Zerg
 
     battlecruisers_count = 0
+    army_count = 0
 
     def __init__(self,args):
         ### Initiating built in Classes
@@ -180,8 +183,8 @@ class ICBot(BotAI):
         sc2.BotAI.__init__(self)
 
     async def on_start(self):
-        print("Starcraft Bot Initalization")
-        print("Expansions:", len(self.expansion_locations_list))
+        # print("Starcraft Bot Initalization")
+        # print("Expansions:", len(self.expansion_locations_list))
         ic = self.args.Industry
         industry_coordinate = tuple(map(int, ic.split(",")))
 
@@ -211,9 +214,13 @@ class ICBot(BotAI):
         final_target = Point2(final_coordinate)
         
         await self.battleCruiserCount()
+        await self.armyCount()
     
         if self.battlecruisers_count == 0:
-            print("No Battle Cruiser Left")
+            # print("CURRENT TIME ", self.time)
+            # print("No Battle Cruiser Left")
+            # print("Army Strength ", self.army_count, " Units")
+
             await self.distribute_workers()
             if self.units(UnitTypeId.HYDRALISK).amount > 3:
                 await self.hydraAttack(final_target)
@@ -224,15 +231,28 @@ class ICBot(BotAI):
                     and not u.is_structure
                     and u.type_id != UnitTypeId.DRONE
                 )
-                print("All ARMY Attack Final Target")
+                # print("All ARMY Attack Final Target")
                 if army:
                     for unit in army:
                         unit.attack(final_target)
            
         else:
             await self.hydraAttack(target)
-            print("There are ", self.battlecruisers_count, " battlecruisers")
+
+            # print("CURRENT TIME ", self.time)
+            # print("There are ", self.battlecruisers_count, " battlecruisers")
+            # print("Army Strength ", self.army_count, " Units")
        
+        if self.time > 240:
+            # print("Army Strength", self.army_count)
+            # print("Enemy Carriers ", self.battlecruisers_count)
+            result_data = {
+                "army_strength": self.army_count,
+                "Enemy Carriers": self.battlecruisers_count
+            }
+            print(json.dumps(result_data))
+            await self.client.leave()
+
         await self.corruptAttack(defense_pos)
 
         await self.build_pool()
@@ -283,7 +303,7 @@ class ICBot(BotAI):
 
         if not self.structures(UnitTypeId.SPAWNINGPOOL):
             if self.can_afford(UnitTypeId.SPAWNINGPOOL) and self.already_pending(UnitTypeId.SPAWNINGPOOL) == 0:
-                print("Building Pool ", top_right)
+                # print("Building Pool ", top_right)
                 await self.build(
                     UnitTypeId.SPAWNINGPOOL, 
                     near=top_right
@@ -295,12 +315,12 @@ class ICBot(BotAI):
             and not self.already_pending(UnitTypeId.OVERLORD)
             and self.can_afford(UnitTypeId.OVERLORD)
         ):
-            print("Building Overload")
+            #print("Building Overload")
             larva = self.larva.random
             larva.train(UnitTypeId.OVERLORD)
 
     async def build_airdefense(self, position):
-        print("Air Defense Count ", len(self.structures(UnitTypeId.SPORECRAWLER)))
+        # print("Air Defense Count ", len(self.structures(UnitTypeId.SPORECRAWLER)))
         # Check requirement
         if not self.structures(UnitTypeId.SPAWNINGPOOL).ready:
             return
@@ -324,7 +344,7 @@ class ICBot(BotAI):
             return
 
         # Issue build order
-        print("Building Air Defense")
+        # print("Building Air Defense")
         await self.build(
             UnitTypeId.SPORECRAWLER, 
             near=position, 
@@ -338,7 +358,7 @@ class ICBot(BotAI):
             and self.can_afford(UnitTypeId.HYDRALISK)
             and self.units(UnitTypeId.DRONE).amount >= 6
         ):
-            print("Building HYDRALISK")
+            # print("Building HYDRALISK")
             larva = self.larva.random
             larva.train(UnitTypeId.HYDRALISK)
 
@@ -381,7 +401,7 @@ class ICBot(BotAI):
         ### 3 battle cruisers left
         ### Point2((70, 80))
 
-        print("Hydras attacking", target)     
+        # print("Hydras attacking", target)     
         for hydra in hydras:    
             self.do(hydra.attack(target))
 
@@ -405,6 +425,12 @@ class ICBot(BotAI):
     async def battleCruiserCount(self):
         battlecruisers = self.enemy_units(UnitTypeId.BATTLECRUISER)
         self.battlecruisers_count = len(battlecruisers) 
+
+    async def armyCount(self):
+        my_army = self.units.filter(
+            lambda u: u.type_id != UnitTypeId.DRONE
+        )
+        self.army_count = my_army.amount
 
     async def on_end(self, result):
         print("Game ended. ", result)
