@@ -70,37 +70,7 @@ war_industry_options = [chengdu, shanghai, hanoi, moscow, delhi]
 #### FINAL ATTACK
 english_channel = [50, 87]
 
-### WAR INDUSTRY OPTIONS
-# sim_cal = 0
-# for option in war_industry_options:
-#     for def_build in def_builds:
-#         offensive_grid = generate_3x3_grid_numpy(def_build , dx, dy)
-#         offensive_pts = offensive_grid.reshape(-1,2).tolist()
-
-#         for offensive_pt in offensive_pts:
-#             sim_cal += 1
-#             print("SIMULATION ", sim_cal)
-#             print("INDUSTRY AT ", option)
-#             print("DEFFENSIVE BUILDS AT", def_build)
-#             print("OFFENSIVE POS", offensive_pt)
-#             print("FINAL OFFENSIVE", english_channel)
-#             print("################################")
-
-            # cmd = [
-            #     "python",
-            #     "./worldwar_sim.py",
-            #     "--ComputerRace", "Random",
-            #     "--ComputerDifficulty", "VeryHard",
-            #     "--Map", "WorldWar",
-            #     "--Industry", option,
-            #     "--Offense", offensive_pt,
-            #     "--Defense", def_build,
-            #     "--Final", english_channel
-            # ]
-
-            # subprocess.run(cmd)
-
-### Test Simulation
+### 1 TIME SIMULATION with RANDOM Decisive Battles and War Industry Placements
 option_index = random.randint(0,4)
 option = np.array(war_industry_options[option_index]).astype(int)
 
@@ -129,8 +99,6 @@ cmd = [
     "--Defense", ",".join(map(str, def_build)),
     "--Final", ",".join(map(str, english_channel))
 ]
-
-# subprocess.run(cmd)
 
 process = subprocess.Popen(
     cmd,
@@ -162,7 +130,37 @@ output = "".join(output_lines)
 print("Captured JSON:")
 print(json_results)
 
-## RL CLimb
+
+### RL CLIMB to FIND BEST Decisive Battles and War Industries Placements
+
+# sim_cal = 0
+# for option in war_industry_options:
+#     for def_build in def_builds:
+#         offensive_grid = generate_3x3_grid_numpy(def_build , dx, dy)
+#         offensive_pts = offensive_grid.reshape(-1,2).tolist()
+
+#         for offensive_pt in offensive_pts:
+#             sim_cal += 1
+#             print("SIMULATION ", sim_cal)
+#             print("INDUSTRY AT ", option)
+#             print("DEFFENSIVE BUILDS AT", def_build)
+#             print("OFFENSIVE POS", offensive_pt)
+#             print("FINAL OFFENSIVE", english_channel)
+#             print("################################")
+
+            # cmd = [
+            #     "python",
+            #     "./worldwar_sim.py",
+            #     "--ComputerRace", "Random",
+            #     "--ComputerDifficulty", "VeryHard",
+            #     "--Map", "WorldWar",
+            #     "--Industry", option,
+            #     "--Offense", offensive_pt,
+            #     "--Defense", def_build,
+            #     "--Final", english_channel
+            # ]
+
+            # subprocess.run(cmd)
 
 
 
