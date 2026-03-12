@@ -3,154 +3,158 @@ import subprocess
 import random
 import json
 
-## TopLeft, TopRight, BottomLeft, BottomRight Coordinate of Map
-TL = [74.1, 93.7]
-TR = [114.0, 94.4]
-BL = [77.5, 48.8]
-BR = [100.5, 49.0]
 
-def generate_grid_centers_numpy(TL, TR, BL, BR, rows, cols):
-    TL = np.array(TL)
-    TR = np.array(TR)
-    BL = np.array(BL)
-    BR = np.array(BR)
+def simulate_battle():
 
-    # create normalized grid coordinates
-    u = (np.arange(cols) + 0.5) / cols
-    v = (np.arange(rows) + 0.5) / rows
+    ## TopLeft, TopRight, BottomLeft, BottomRight Coordinate of Map
+    TL = [74.1, 93.7]
+    TR = [114.0, 94.4]
+    BL = [77.5, 48.8]
+    BR = [100.5, 49.0]
 
-    U, V = np.meshgrid(u, v)
+    def generate_grid_centers_numpy(TL, TR, BL, BR, rows, cols):
+        TL = np.array(TL)
+        TR = np.array(TR)
+        BL = np.array(BL)
+        BR = np.array(BR)
 
-    # bilinear interpolation
-    grid = ((1-U)*(1-V))[...,None]*TL + \
-           (U*(1-V))[...,None]*TR + \
-           ((1-U)*V)[...,None]*BL + \
-           (U*V)[...,None]*BR
+        # create normalized grid coordinates
+        u = (np.arange(cols) + 0.5) / cols
+        v = (np.arange(rows) + 0.5) / rows
 
-    return grid
+        U, V = np.meshgrid(u, v)
 
-#### POSSIBLE DEFENSE STRUCTURE POSITIONING
-grid = generate_grid_centers_numpy(TL, TR, BL, BR, 12, 12)
+        # bilinear interpolation
+        grid = ((1-U)*(1-V))[...,None]*TL + \
+               (U*(1-V))[...,None]*TR + \
+               ((1-U)*V)[...,None]*BL + \
+               (U*V)[...,None]*BR
 
-# print(grid.shape)
-# print(grid[0,0])
+        return grid
 
-def_builds = grid.reshape(-1,2).tolist()
-# print(len(def_builds))
+    #### POSSIBLE DEFENSE STRUCTURE POSITIONING
+    grid = generate_grid_centers_numpy(TL, TR, BL, BR, 12, 12)
 
-#### POSSIBLE ARMY OFFENSIVE POSITIONING
-def generate_3x3_grid_numpy(center, dx, dy):
-    x, y = center
+    # print(grid.shape)
+    # print(grid[0,0])
 
-    xs = np.array([x - dx, x, x + dx])
-    ys = np.array([y + dy, y, y - dy])
+    def_builds = grid.reshape(-1,2).tolist()
+    # print(len(def_builds))
 
-    X, Y = np.meshgrid(xs, ys)
+    #### POSSIBLE ARMY OFFENSIVE POSITIONING
+    def generate_3x3_grid_numpy(center, dx, dy):
+        x, y = center
 
-    grid = np.stack((X, Y), axis=2)
+        xs = np.array([x - dx, x, x + dx])
+        ys = np.array([y + dy, y, y - dy])
 
-    return grid
+        X, Y = np.meshgrid(xs, ys)
 
-center = grid[0,0]
-dx = 3
-dy = 3
+        grid = np.stack((X, Y), axis=2)
 
-# offensive_pos = generate_3x3_grid_numpy(center, dx, dy)
-# print(offensive_pos)
+        return grid
 
-#### INDUSTRY 1 of 5 options
-chengdu = [94.6, 75.7]
-shanghai = [108.7, 83.7]
-hanoi = [98.5, 67.7]
-moscow = [79.4, 94.6]
-delhi = [83.5, 65.0]
+    center = grid[0,0]
+    dx = 3
+    dy = 3
 
-war_industry_options = [chengdu, shanghai, hanoi, moscow, delhi]
+    # offensive_pos = generate_3x3_grid_numpy(center, dx, dy)
+    # print(offensive_pos)
 
-#### FINAL ATTACK
-english_channel = [50, 87]
+    #### INDUSTRY 1 of 5 options
+    chengdu = [94.6, 75.7]
+    shanghai = [108.7, 83.7]
+    hanoi = [98.5, 67.7]
+    moscow = [79.4, 94.6]
+    delhi = [83.5, 65.0]
 
-### 1 TIME SIMULATION with RANDOM Decisive Battles and War Industry Placements
-option_index = random.randint(0,4)
-option = np.array(war_industry_options[option_index]).astype(int)
+    war_industry_options = [chengdu, shanghai, hanoi, moscow, delhi]
 
-def_pos = random.randint(0, 143)
-def_build = np.array(def_builds[def_pos]).astype(int)
+    #### FINAL ATTACK
+    english_channel = [50, 87]
 
-offensive_grid = generate_3x3_grid_numpy(def_build , dx, dy)
-offensive_pts = offensive_grid.reshape(-1,2).tolist()
-offensive_pt = np.array(offensive_pts[0]).astype(int)
+    ### 1 TIME SIMULATION with RANDOM Decisive Battles and War Industry Placements
+    option_index = random.randint(0,4)
+    option = np.array(war_industry_options[option_index]).astype(int)
 
-# print("INDUSTRY AT ", option)
-# print("DEFFENSIVE BUILDS AT", def_build)
-# print("OFFENSIVE POS", offensive_pt)
-# print("FINAL OFFENSIVE", english_channel)
-# print("################################")
+    def_pos = random.randint(0, 143)
+    def_build = np.array(def_builds[def_pos]).astype(int)
 
-cmd = [
-    "python",
-    "-u",
-    "./worldwar_sim.py",
-    "--ComputerRace", "Random",
-    "--ComputerDifficulty", "VeryHard",
-    "--Map", "WorldWar",
-    "--Industry", ",".join(map(str, option)),
-    "--Offense", ",".join(map(str, offensive_pt)),
-    "--Defense", ",".join(map(str, def_build)),
-    "--Final", ",".join(map(str, english_channel))
-]
+    offensive_grid = generate_3x3_grid_numpy(def_build , dx, dy)
+    offensive_pts = offensive_grid.reshape(-1,2).tolist()
+    offensive_pt = np.array(offensive_pts[0]).astype(int)
 
-process = subprocess.Popen(
-    cmd,
-    stdout=subprocess.PIPE,
-    stderr=subprocess.STDOUT,
-    text=True
-)
+    # print("INDUSTRY AT ", option)
+    # print("DEFFENSIVE BUILDS AT", def_build)
+    # print("OFFENSIVE POS", offensive_pt)
+    # print("FINAL OFFENSIVE", english_channel)
+    # print("################################")
 
-output_lines = []
-json_results = []
+    cmd = [
+        "python",
+        "-u",
+        "./worldwar_sim.py",
+        "--ComputerRace", "Random",
+        "--ComputerDifficulty", "VeryHard",
+        "--Map", "WorldWar",
+        "--Industry", ",".join(map(str, option)),
+        "--Offense", ",".join(map(str, offensive_pt)),
+        "--Defense", ",".join(map(str, def_build)),
+        "--Final", ",".join(map(str, english_channel))
+    ]
 
-for line in process.stdout:
-    print(line, end="")              # still show terminal output
-    output_lines.append(line)
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True
+    )
 
-    # detect JSON line
-    line_clean = line.strip()
-    if line_clean.startswith("{") and "army_strength" in line_clean:
-        try:
-            data = json.loads(line_clean)
-            json_results.append(data)
-        except json.JSONDecodeError:
-            pass
+    output_lines = []
+    json_results = []
 
-process.wait()
+    for line in process.stdout:
+        print(line, end="")              # still show terminal output
+        output_lines.append(line)
 
-output = "".join(output_lines)
+        # detect JSON line
+        line_clean = line.strip()
+        if line_clean.startswith("{") and "army_strength" in line_clean:
+            try:
+                data = json.loads(line_clean)
+                json_results.append(data)
+            except json.JSONDecodeError:
+                pass
 
-print("Captured JSON:")
-print(json_results)
+    process.wait()
 
-battle_scores = [
-    json_results[0]["Battle Score"], 
-    json_results[1]["Battle Score"], 
-    json_results[2]["Battle Score"]
-]
+    output = "".join(output_lines)
 
-battle_average_score = np.mean(battle_scores)
-battle_std = np.std(battle_scores)
+    # print("Captured JSON:")
+    # print(json_results)
 
-battle_stats = {
-    "Industry": option.tolist(),
-    "Offensive_Pos": offensive_pt.tolist(),
-    "Defensive_Pos": def_build.tolist(),
-    "Simulation_1": json_results[0],
-    "Simulation_2": json_results[1],
-    "Simulation_3": json_results[2],
-    "Battle_Score": float(battle_average_score),
-    "Battle_STD": float(battle_std)
-}
+    battle_scores = [
+        json_results[0]["Battle Score"], 
+        json_results[1]["Battle Score"], 
+        json_results[2]["Battle Score"]
+    ]
 
-print(battle_stats)
+    battle_average_score = np.mean(battle_scores)
+    battle_std = np.std(battle_scores)
+
+    battle_stats = {
+        "Industry": option.tolist(),
+        "Offensive_Pos": offensive_pt.tolist(),
+        "Defensive_Pos": def_build.tolist(),
+        "Simulation_1": json_results[0],
+        "Simulation_2": json_results[1],
+        "Simulation_3": json_results[2],
+        "Battle_Score": float(battle_average_score),
+        "Battle_STD": float(battle_std)
+    }
+
+    print(battle_stats)
+    return battle_stats
 
 def append_json(filename, new_data):
 
@@ -165,7 +169,15 @@ def append_json(filename, new_data):
     with open(filename, "w") as f:
         json.dump(data, f, indent=2)
 
+battle_stats = simulate_battle()
 append_json("battle_stats.json", battle_stats)
+
+mean_score = battle_stats["Battle_Score"]
+std = battle_stats["Battle_STD"]
+reward = mean_score - 0.3 * std
+print("Battle Reward ", reward)
+
+
 
 ### RL CLIMB to FIND BEST Decisive Battles and War Industries Placements
 
