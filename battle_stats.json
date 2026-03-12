@@ -1,0 +1,36 @@
+[
+  {
+    "Industry": [
+      98,
+      67
+    ],
+    "Offensive_Pos": [
+      82,
+      83
+    ],
+    "Defensive_Pos": [
+      85,
+      80
+    ],
+    "Simulation_1": {
+      "army_strength": 13,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 39
+    },
+    "Simulation_2": {
+      "army_strength": 55,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 165
+    },
+    "Simulation_3": {
+      "army_strength": 23,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 69
+    },
+    "Battle_Score": 91.0,
+    "Battle_STD": 53.74011537017761
+  }
+]

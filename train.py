@@ -130,6 +130,42 @@ output = "".join(output_lines)
 print("Captured JSON:")
 print(json_results)
 
+battle_scores = [
+    json_results[0]["Battle Score"], 
+    json_results[1]["Battle Score"], 
+    json_results[2]["Battle Score"]
+]
+
+battle_average_score = np.mean(battle_scores)
+battle_std = np.std(battle_scores)
+
+battle_stats = {
+    "Industry": option.tolist(),
+    "Offensive_Pos": offensive_pt.tolist(),
+    "Defensive_Pos": def_build.tolist(),
+    "Simulation_1": json_results[0],
+    "Simulation_2": json_results[1],
+    "Simulation_3": json_results[2],
+    "Battle_Score": float(battle_average_score),
+    "Battle_STD": float(battle_std)
+}
+
+print(battle_stats)
+
+def append_json(filename, new_data):
+
+    try:
+        with open(filename, "r") as f:
+            data = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        data = []
+
+    data.append(new_data)
+
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=2)
+
+append_json("battle_stats.json", battle_stats)
 
 ### RL CLIMB to FIND BEST Decisive Battles and War Industries Placements
 

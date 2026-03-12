@@ -175,6 +175,7 @@ class ICBot(BotAI):
     RACE: Race = Race.Zerg
 
     battlecruisers_count = 0
+    marines_count = 0
     army_count = 0
 
     def __init__(self,args):
@@ -246,9 +247,13 @@ class ICBot(BotAI):
         if self.time > 240:
             # print("Army Strength", self.army_count)
             # print("Enemy Carriers ", self.battlecruisers_count)
+            score = self.army_count * 3 - self.battlecruisers_count * 13 - self.marines_count * 2
+
             result_data = {
                 "army_strength": self.army_count,
-                "Enemy Carriers": self.battlecruisers_count
+                "Enemy Carriers": self.battlecruisers_count,
+                "Enemy Marines": self.marines_count,
+                "Battle Score": score
             }
             print(json.dumps(result_data))
             await self.client.leave()
@@ -424,12 +429,13 @@ class ICBot(BotAI):
 
     async def battleCruiserCount(self):
         battlecruisers = self.enemy_units(UnitTypeId.BATTLECRUISER)
+        marines = self.enemy_units(UnitTypeId.MARINE)
+
         self.battlecruisers_count = len(battlecruisers) 
+        self.marines_count = len(marines)
 
     async def armyCount(self):
-        my_army = self.units.filter(
-            lambda u: u.type_id != UnitTypeId.DRONE
-        )
+        my_army = self.units.filter(lambda u: u.can_attack)
         self.army_count = my_army.amount
 
     async def on_end(self, result):
