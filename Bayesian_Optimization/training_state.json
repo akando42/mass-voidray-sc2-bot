@@ -1,0 +1,14 @@
+{
+  "iteration": 7,
+  "best_reward": 210.47029414592217,
+  "best_combo_index": 677,
+  "tested_indices": [
+    0,
+    1,
+    2,
+    677,
+    684,
+    653,
+    668
+  ]
+}

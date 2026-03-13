@@ -453,5 +453,390 @@
     "Battle_Score": 24.333333333333332,
     "Battle_STD": 60.18490028422596,
     "combo_index": 1907
+  },
+  {
+    "Industry": [
+      94,
+      75
+    ],
+    "Offensive_Pos": [
+      87,
+      76
+    ],
+    "Defensive_Pos": [
+      87,
+      73
+    ],
+    "Simulation_1": {
+      "army_strength": 31,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 93
+    },
+    "Simulation_2": {
+      "army_strength": 42,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 126
+    },
+    "Simulation_3": {
+      "army_strength": 64,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 192
+    },
+    "Battle_Score": 137.0,
+    "Battle_STD": 41.15823125451335,
+    "combo_index": 577
+  },
+  {
+    "Industry": [
+      94,
+      75
+    ],
+    "Offensive_Pos": [
+      84,
+      76
+    ],
+    "Defensive_Pos": [
+      87,
+      73
+    ],
+    "Simulation_1": {
+      "army_strength": 39,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 117
+    },
+    "Simulation_2": {
+      "army_strength": 72,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 216
+    },
+    "Simulation_3": {
+      "army_strength": 30,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 90
+    },
+    "Battle_Score": 141.0,
+    "Battle_STD": 54.16641025580336,
+    "combo_index": 576
+  },
+  {
+    "Industry": [
+      94,
+      75
+    ],
+    "Offensive_Pos": [
+      85,
+      72
+    ],
+    "Defensive_Pos": [
+      82,
+      69
+    ],
+    "Simulation_1": {
+      "army_strength": 43,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 129
+    },
+    "Simulation_2": {
+      "army_strength": 80,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 240
+    },
+    "Simulation_3": {
+      "army_strength": 87,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 1,
+      "Battle Score": 259
+    },
+    "Battle_Score": 209.33333333333334,
+    "Battle_STD": 57.33139531608217,
+    "combo_index": 668
+  },
+  {
+    "Industry": [
+      98,
+      67
+    ],
+    "Offensive_Pos": [
+      85,
+      64
+    ],
+    "Defensive_Pos": [
+      82,
+      61
+    ],
+    "Simulation_1": {
+      "army_strength": 81,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 243
+    },
+    "Simulation_2": {
+      "army_strength": 18,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 14,
+      "Battle Score": 26
+    },
+    "Simulation_3": {
+      "army_strength": 35,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 105
+    },
+    "Battle_Score": 124.66666666666667,
+    "Battle_STD": 89.67472082786517,
+    "combo_index": 3476
+  },
+  {
+    "Industry": [
+      94,
+      75
+    ],
+    "Offensive_Pos": [
+      80,
+      69
+    ],
+    "Defensive_Pos": [
+      77,
+      69
+    ],
+    "Simulation_1": {
+      "army_strength": 0,
+      "Enemy Carriers": 5,
+      "Enemy Marines": 4,
+      "Battle Score": -73
+    },
+    "Simulation_2": {
+      "army_strength": 0,
+      "Enemy Carriers": 2,
+      "Enemy Marines": 0,
+      "Battle Score": -26
+    },
+    "Simulation_3": {
+      "army_strength": 0,
+      "Enemy Carriers": 4,
+      "Enemy Marines": 3,
+      "Battle Score": -58
+    },
+    "Battle_Score": -52.333333333333336,
+    "Battle_STD": 19.601587237318874,
+    "combo_index": 653
+  },
+  {
+    "Industry": [
+      94,
+      75
+    ],
+    "Offensive_Pos": [
+      85,
+      72
+    ],
+    "Defensive_Pos": [
+      82,
+      69
+    ],
+    "Simulation_1": {
+      "army_strength": 67,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 201
+    },
+    "Simulation_2": {
+      "army_strength": 65,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 195
+    },
+    "Simulation_3": {
+      "army_strength": 50,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 150
+    },
+    "Battle_Score": 182.0,
+    "Battle_STD": 22.759613353482084,
+    "combo_index": 668
+  },
+  {
+    "Industry": [
+      94,
+      75
+    ],
+    "Offensive_Pos": [
+      72,
+      94
+    ],
+    "Defensive_Pos": [
+      75,
+      91
+    ],
+    "Simulation_1": {
+      "army_strength": 5,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 15
+    },
+    "Simulation_2": {
+      "army_strength": 3,
+      "Enemy Carriers": 1,
+      "Enemy Marines": 0,
+      "Battle Score": -4
+    },
+    "Simulation_3": {
+      "army_strength": 4,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 12
+    },
+    "Battle_Score": 7.666666666666667,
+    "Battle_STD": 8.339997335464536,
+    "combo_index": 0
+  },
+  {
+    "Industry": [
+      94,
+      75
+    ],
+    "Offensive_Pos": [
+      87,
+      72
+    ],
+    "Defensive_Pos": [
+      84,
+      69
+    ],
+    "Simulation_1": {
+      "army_strength": 73,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 219
+    },
+    "Simulation_2": {
+      "army_strength": 69,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 207
+    },
+    "Simulation_3": {
+      "army_strength": 70,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 210
+    },
+    "Battle_Score": 212.0,
+    "Battle_STD": 5.0990195135927845,
+    "combo_index": 677
+  },
+  {
+    "Industry": [
+      94,
+      75
+    ],
+    "Offensive_Pos": [
+      84,
+      72
+    ],
+    "Defensive_Pos": [
+      87,
+      69
+    ],
+    "Simulation_1": {
+      "army_strength": 0,
+      "Enemy Carriers": 1,
+      "Enemy Marines": 1,
+      "Battle Score": -15
+    },
+    "Simulation_2": {
+      "army_strength": 46,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 138
+    },
+    "Simulation_3": {
+      "army_strength": 47,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 141
+    },
+    "Battle_Score": 88.0,
+    "Battle_STD": 72.84229540589725,
+    "combo_index": 684
+  },
+  {
+    "Industry": [
+      94,
+      75
+    ],
+    "Offensive_Pos": [
+      75,
+      94
+    ],
+    "Defensive_Pos": [
+      75,
+      91
+    ],
+    "Simulation_1": {
+      "army_strength": 2,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 4,
+      "Battle Score": -2
+    },
+    "Simulation_2": {
+      "army_strength": 17,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 7,
+      "Battle Score": 37
+    },
+    "Simulation_3": {
+      "army_strength": 9,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 27
+    },
+    "Battle_Score": 20.666666666666668,
+    "Battle_STD": 16.539514973407037,
+    "combo_index": 1
+  },
+  {
+    "Industry": [
+      94,
+      75
+    ],
+    "Offensive_Pos": [
+      78,
+      94
+    ],
+    "Defensive_Pos": [
+      75,
+      91
+    ],
+    "Simulation_1": {
+      "army_strength": 17,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 51
+    },
+    "Simulation_2": {
+      "army_strength": 23,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 69
+    },
+    "Simulation_3": {
+      "army_strength": 26,
+      "Enemy Carriers": 0,
+      "Enemy Marines": 0,
+      "Battle Score": 78
+    },
+    "Battle_Score": 66.0,
+    "Battle_STD": 11.224972160321824,
+    "combo_index": 2
   }
 ]
