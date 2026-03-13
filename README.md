@@ -21,10 +21,18 @@ $ python ./indochina_sim.py --ComputerRace Random --ComputerDifficulty VeryHard 
 $ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard --Map WorldWar --Industry "104,74" --Offense "88,79" --Defense "88,73" --Final "50, 87"
 ```
 
+### RL Discovered Best Solution
+
+```
+$ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard --Map WorldWar --Industry "94,75" --Offense "87,72" --Defense "84,69" --Final "50, 87"
+```
+
 ### GRID 
 ```
 [74.1, 93.7]   [114.0, 94.4]
 [77.5, 48.8]   [100.5, 49.0]
 ```
+### ALGO Approaches
 
-
+[ ] Fibonacci Optimization Algorithm
+[ ] Decaying Epsilon Around Highest Reward

@@ -177,7 +177,6 @@ def combo_to_features(combo):
 X_all=np.array([combo_to_features(c) for c in combos])
 
 
-
 ###################################
 # LOAD TRAINING DATA
 ###################################
@@ -273,43 +272,24 @@ def train_model(X,y):
 # SELECT NEXT COMBO
 ###################################
 
-def select_next_combo(model, tested, step, iterations):
+def select_next_combo(model, tested):
 
-    mu, sigma = model.predict(X_all, return_std=True)
+    candidate_size = 300
+
+    candidates = np.random.choice(len(X_all), candidate_size, replace=False)
+
+    mu, sigma = model.predict(X_all[candidates], return_std=True)
 
     kappa = 2.0
     acquisition = mu + kappa * sigma
-    acquisition += np.random.normal(0,0.01,len(acquisition))
 
-    if len(tested) > 0:
-        acquisition[list(tested)] = -999999
+    best_local = candidates[np.argmax(acquisition)]
 
-    best_index = int(np.argmax(acquisition))
-    print("BEST INDEX ", best_index)
+    if best_local in tested:
+        remaining = list(set(range(len(X_all))) - tested)
+        best_local = random.choice(remaining)
 
-    ################################
-    # Decaying exploration radius
-    ################################
-
-    progress = step / iterations
-
-    max_radius = 800      # early exploration
-    min_radius = 5        # late exploitation
-
-    radius = int(max_radius * (1 - progress) + min_radius)
-
-    low = max(0, best_index - radius)
-    high = min(len(X_all)-1, best_index + radius)
-
-    candidate = random.randint(low, high)
-
-    # ensure not already tested
-    attempts = 0
-    while candidate in tested and attempts < 50:
-        candidate = random.randint(low, high)
-        attempts += 1
-
-    return candidate
+    return int(best_local)
 
 
 ###################################
@@ -438,7 +418,7 @@ for step in range(start_iter,iterations):
 
         model=train_model(X,y)
 
-        combo_index=select_next_combo(model,tested_indices, step, iterations)
+        combo_index=select_next_combo(model,tested_indices)
 
         print("MODE: BAYESIAN UCB")
 
