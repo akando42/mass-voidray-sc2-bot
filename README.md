@@ -33,10 +33,12 @@ $ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard -
 [77.5, 48.8]   [100.5, 49.0]
 ```
 ### ALGO Approaches
+[X] 60 Iteration Epsilon Specs
+[ ] Decaying Epsilon Around Highest Reward
 
 [ ] Fibonacci Optimization Algorithm
-[ ] Decaying Epsilon Around Highest Reward
-[ ] 60 Iteration Epsilon Specs
+
+
 ```
 epsilon_start = 0.9
 epsilon_decay = 0.9387

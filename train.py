@@ -304,10 +304,10 @@ except (FileNotFoundError, json.JSONDecodeError):
 # RL PARAMETERS
 # ----------------------------
 
-epsilon_start = 0.35
-epsilon_decay = 0.992
+epsilon_start = 0.9
+epsilon_decay = 0.9387
 epsilon_min = 0.02
-iterations = 300
+iterations = 60
 
 # ----------------------------
 # TRAINING LOOP
