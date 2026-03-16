@@ -23,6 +23,12 @@ $ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard -
 
 ### RL Discovered Best Solution
 
+Epsilon Greedy
+```
+$ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard --Map WorldWar --Industry "94,75" --Offense "87,69" --Defense "87,69" --Final "50, 87"
+```
+
+Baynesian Optimizer
 ```
 $ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard --Map WorldWar --Industry "94,75" --Offense "87,72" --Defense "84,69" --Final "50, 87"
 ```
@@ -34,8 +40,8 @@ $ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard -
 ```
 ### ALGO Approaches
 [X] 60 Iteration Epsilon Specs
-[ ] Decaying Epsilon Around Highest Reward
 
+[ ] Decaying Epsilon Around Highest Reward
 [ ] Fibonacci Optimization Algorithm
 
 
