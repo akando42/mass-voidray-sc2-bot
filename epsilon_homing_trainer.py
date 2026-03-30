@@ -324,9 +324,10 @@ for step in range(start_step, iterations):
     # explore vs exploit
     if random.random() < epsilon:
         combo_index = random.randint(0, num_combos - 1)
+        print("MODE: EXPLORE")
 
     else:
-        top_k = 10
+        top_k = 3
         top_indices = np.argsort(Q)[-top_k:]
         anchor = random.choice(top_indices)
 
