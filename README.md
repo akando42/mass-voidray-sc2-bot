@@ -40,10 +40,15 @@ $ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard -
 ```
 ### ALGO Approaches
 [X] 60 Iteration Epsilon Specs
-
 [ ] Decaying Epsilon Around Highest Reward
-[ ] Fibonacci Optimization Algorithm
 
+==> Random at Epsilon === 1 from (0, num_combos-1) for 12 iterations to find peaks
+
+==> Narrow random.randint(0, num_combos-1) around best_combo_index
+==> 
+
+
+[ ] Fibonacci Optimization Algorithm
 
 ```
 epsilon_start = 0.9
