@@ -33,6 +33,11 @@ Baynesian Optimizer
 $ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard --Map WorldWar --Industry "94,75" --Offense "87,72" --Defense "84,69" --Final "50, 87"
 ```
 
+Decaying Epsilon Around TopK
+```
+$ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard --Map WorldWar --Industry "98,67" --Offense "87,65" --Defense "84, 65" --Final "50, 87"
+```
+
 ### GRID 
 ```
 [74.1, 93.7]   [114.0, 94.4]
@@ -40,12 +45,11 @@ $ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard -
 ```
 ### ALGO Approaches
 [X] 60 Iteration Epsilon Specs
+
 [ ] Decaying Epsilon Around Highest Reward
 
 ==> Random at Epsilon === 1 from (0, num_combos-1) for 12 iterations to find peaks
-
 ==> Narrow random.randint(0, num_combos-1) around best_combo_index
-==> 
 
 
 [ ] Fibonacci Optimization Algorithm
