@@ -59,3 +59,18 @@ epsilon_start = 0.9
 epsilon_decay = 0.9387
 epsilon_min = 0.02
 ```
+
+
+### Multi Pronged Feigned Retreat Attack From Western Force 
+```
+python ./west_vs_east.py \
+--Map MultiprongedAttacks \
+--Industry "104,74" \
+--Offense "88,79" \
+--Defense "88,73" \
+--Final "50,87" \
+--EnemyOffense "100,54|78,68|71,99" \
+--ComputerRace Random \
+--ComputerDifficulty VeryHard
+```
+

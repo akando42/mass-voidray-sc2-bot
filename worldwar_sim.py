@@ -149,7 +149,10 @@ def run(game_id):
 
         sc2.run_game(
             sc2.maps.get(args.Map),
-            [bot, Computer(Race[args.ComputerRace], Difficulty[args.ComputerDifficulty])],
+            [
+                bot, 
+                Computer(Race[args.ComputerRace], Difficulty[args.ComputerDifficulty])
+            ],
             realtime=args.Realtime,
             sc2_version=args.Sc2Version
         )
