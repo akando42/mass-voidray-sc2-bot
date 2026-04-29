@@ -45,12 +45,7 @@ $ python ./worldwar_sim.py --ComputerRace Random --ComputerDifficulty VeryHard -
 ```
 ### ALGO Approaches
 [X] 60 Iteration Epsilon Specs
-
-[ ] Decaying Epsilon Around Highest Reward
-
-==> Random at Epsilon === 1 from (0, num_combos-1) for 12 iterations to find peaks
-==> Narrow random.randint(0, num_combos-1) around best_combo_index
-
+[X] Decaying Epsilon Around Highest Reward
 
 [ ] Fibonacci Optimization Algorithm
 
@@ -59,6 +54,11 @@ epsilon_start = 0.9
 epsilon_decay = 0.9387
 epsilon_min = 0.02
 ```
+
+****
+Rewrite FIBONACCI PHASE add More Prior Random  
+Keep Best Reward as the same if FIBON do not reach new high 
+****
 
 
 ### Multi Pronged Feigned Retreat Attack From Western Force 

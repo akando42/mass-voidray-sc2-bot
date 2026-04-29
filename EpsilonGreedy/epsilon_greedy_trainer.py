@@ -306,7 +306,7 @@ except (FileNotFoundError, json.JSONDecodeError):
 
 epsilon_start = 0.9
 epsilon_decay = 0.9387
-epsilon_min = 0.1
+epsilon_min = 0.02
 iterations = 60
 
 # ----------------------------
@@ -316,26 +316,25 @@ iterations = 60
 for step in range(start_step, iterations):
 
     epsilon = max(epsilon_min, epsilon_start * (epsilon_decay ** step))
-    std_dev = max(1, (num_combos / 4) * epsilon)
 
     print("\n=== ITERATION", step, "===")
     print("epsilon:", round(epsilon, 4))
 
-    # explore vs exploit
+    ##############################################
+    # EXPLORE vs EXPLOIT basing on decay Epsilon #
+    ##############################################
+
     if random.random() < epsilon:
-        combo_index = random.randint(0, num_combos - 1)
+        combo_index = random.randint(0, num_combos-1)
         print("MODE: EXPLORE")
-
     else:
-        top_k = 3
-        top_indices = np.argsort(Q)[-top_k:]
-        anchor = random.choice(top_indices)
-
-        combo_index = int(random.gauss(anchor, std_dev))
-        combo_index = max(0, min(num_combos - 1, combo_index))
-
+        combo_index = int(np.argmax(Q))
         print("MODE: EXPLOIT")
-        
+
+    ##############################################
+    # EXPLORE vs EXPLOIT basing on decay Epsilon #
+    ##############################################
+
     combo = combos[combo_index]
 
     print("Testing combo index:", combo_index)
